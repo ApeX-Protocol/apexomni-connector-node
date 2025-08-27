@@ -1,6 +1,6 @@
 {
   "name": "apexomni-connector-node",
-  "version": "0.3.0-alpha.1",
+  "version": "0.3.1-alpha.1",
   "description": "ApexOmni Connector Node.js SDK",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -14,10 +14,11 @@
   ],
   "scripts": {
     "test": "mocha test/**.spec.ts",
-    "test:env": "mocha test/index.spec.ts",
-    "test:pro": "mocha test/pro/**.spec.ts",
-    "test:omni": "mocha test/omni/**.spec.ts",
     "test:omniPrivate": "mocha test/private.spec.ts",
+    "test:omniPublic": "mocha test/public.spec.ts",
+    "test:omniCreateOrder": "mocha test/createOrder.spec.ts",
+    "test:omniPrivateWs": "npx ts-node test/ws-private.ts",
+    "test:omniPublicWs": "npx ts-node test/ws-public.ts",
     "clean": "rimraf dist lib lib.esm lib.umd cache artifacts out docs",
     "build": "npm run  clean && npm run build:cjs ",
     "build:cjs": "tsc -p tsconfig.cjs.json --diagnostics && npm run copy",
@@ -34,10 +35,12 @@
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.15.8",
+    "@types/crypto-js": "^4.2.2",
     "@types/mocha": "^5.2.7",
     "@types/node": "^11.12.1",
     "@typescript-eslint/eslint-plugin": "^5.5.0",
     "@typescript-eslint/parser": "^5.5.0",
+    "@types/ws": "^7.4.0",
     "babelify": "^10.0.0",
     "chai": "^4.2.0",
     "copy-webpack-plugin": "^12.0.2",
@@ -60,7 +63,6 @@
     "node": ">=10"
   },
   "dependencies": {
-    "es6-promisify": "^7.0.0",
     "axios": "^1.6.7",
     "big.js": "^6.2.1",
     "bigint-buffer": "^1.1.5",
@@ -68,8 +70,10 @@
     "crypto": "^1.0.1",
     "crypto-browserify": "^3.12.0",
     "crypto-js": "^4.2.0",
+    "es6-promisify": "^7.0.0",
     "ethereum-cryptography": "0.1.3",
     "ethers": "5.5.4",
+    "isomorphic-ws": "^4.0.1",
     "lodash": "^4.17.21",
     "qs": "^6.11.1",
     "viem": "^2.21.22",
@@ -86,5 +90,8 @@
       "reportFilename": "apexomni-connector-node"
     },
     "extension": "ts"
+  },
+  "compilerOptions": {
+    "types": ["node", "ws"]
   }
 }

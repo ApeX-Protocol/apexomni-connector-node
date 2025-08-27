@@ -52,3 +52,45 @@ await apexClient.init(apiKeyCredentials, seed);
 
 ```
 
+# Public Websocket Api Example
+
+Please refer to [ws-public api](test/ws-public.ts)
+
+```typescript
+const client = new ApexWsClient();
+client.subscribeTicker('BTC-USDT', (data) => {
+    console.log('Ticker:', data);
+});
+
+client.subscribeAllTicker((data) => {
+    console.log('AllTicker:', data);
+});
+
+client.subscribeDepth('BTC-USDT', 25,(data) => {
+    console.log('Depth:', data);
+});
+
+client.subscribeKlines('BTC-USDT', '1',(data) => {
+    console.log('Klines:', data);
+});
+
+client.subscribeTrade('BTC-USDT', (data) => {
+    console.log('Trade:', data);
+});
+```
+
+# Private Websocket Api Example
+
+Please refer to [ws-private api](test/ws-private.ts)
+
+```typescript
+const apiKeyCredentials: ApiKeyCredentials = {
+    key: omniUser.key,
+    passphrase: omniUser.passphrase,
+    secret: omniUser.secret,
+};
+const client = new ApexWsClient(WS_PROD, apiKeyCredentials );
+client.subscribePrivateData((data) => {
+    console.log('PrivateData:', data);
+});
+```

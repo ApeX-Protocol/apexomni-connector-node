@@ -62,7 +62,7 @@ export class PrivateApi {
     }
     const isoTimestamp: ISO8601 = this.clientConfig.clock.getAdjustedIsoString();
     const headers = {
-      'APEX-SIGNATURE': this.sign(path, method, isoTimestamp, params),
+      'APEX-SIGNATURE': PrivateApi.sign(path, method, isoTimestamp, params, this.clientConfig.apiKeyCredentials.secret),
       'APEX-API-KEY': this.clientConfig.apiKeyCredentials.key,
       'APEX-TIMESTAMP': new Date(isoTimestamp).getTime(),
       'APEX-PASSPHRASE': this.clientConfig.apiKeyCredentials.passphrase,
@@ -75,15 +75,16 @@ export class PrivateApi {
     return this.clientConfig.apiTool.apiRequest(path, method, params, config);
   }
 
-  private sign(
+  public static sign(
     requestPath: string,
     method: 'get' | 'post' | 'put' | 'delete',
     isoTimestamp: ISO8601,
     params: string,
+    secret: string
   ): string {
     const messageString: string =
       new Date(isoTimestamp).getTime() + method.toUpperCase() + requestPath + (isNullOrBlank(params) ? '' : params);
-    const key = Buffer.from(this.clientConfig.apiKeyCredentials.secret).toString('base64');
+    const key = Buffer.from(secret).toString('base64');
     const hash = cryptojs.HmacSHA256(messageString, key);
     return hash.toString(cryptojs.enc.Base64);
   }

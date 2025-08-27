@@ -1,9 +1,9 @@
 import { Trace } from '../src/omni/tool/Tool';
-import { ApexClient, OMNI_QA } from '../src';
+import { ApexClient, OMNI_PROD } from '../src';
 
 describe('Omni Public Api Example', () => {
   let apexClient: ApexClient.omni;
-  const env = OMNI_QA
+  const env = OMNI_PROD
 
   before(async () => {
     apexClient = new ApexClient.omni(env);
@@ -40,7 +40,7 @@ describe('Omni Public Api Example', () => {
     Trace.print(tickers);
   });
 
-  // update v2
+  // update v3
   it('GET Funding Rate History', async () => {
     const historyFunding = await apexClient.publicApi.historyFunding('BTC-USDT');
     // const historyFunding = await apexClient.publicApi.historyFunding('BTC-USDT');

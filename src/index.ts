@@ -1,5 +1,6 @@
 import { ApexClient as ApexClientPro, ApexClientV2 } from './pro/ApexClient';
 import { ApexClientOmni } from './omni/ApexClient';
+import { ApexWsClient } from './ws/ApexWsClient';
 import { ENV, PROD, QA } from './pro/Constant';
 import { ENV as OmniENV, PROD as OMNI_PROD, QA as OMNI_QA } from './omni/Constant';
 
@@ -20,7 +21,7 @@ namespace ApexClient {
   export type omni = ApexClientOmni;
 }
 
-export { ApexClient, ApexClientV2, ApexClientOmni };
+export { ApexClient, ApexClientV2, ApexClientOmni, ApexWsClient };
 
 export { ENV, PROD, QA };
 
