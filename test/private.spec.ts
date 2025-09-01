@@ -9,12 +9,12 @@ import {
   OrderType,
 } from '../src/omni/interface';
 import { Trace } from '../src/omni/tool/Tool';
-import { ApexClient, OMNI_QA } from '../src';
+import { ApexClient, OMNI_QA, OMNI_PROD } from '../src';
 import {numberToBytes} from "viem";
 
 describe('Omni Private Api Example', () => {
   let apexClient: ApexClient.omni;
-  const env = OMNI_QA
+  const env = OMNI_PROD
 
   before(async () => {
     apexClient = new ApexClient.omni(env);
@@ -104,7 +104,6 @@ describe('Omni Private Api Example', () => {
     const result = await apexClient.privateApi.cancelOrder(orderId);
     Trace.print(result);
   });
-
 
   it('GET Funding Rate', async () => {
     const { fundingValues, totalSize } = await apexClient.privateApi.fundingRate();

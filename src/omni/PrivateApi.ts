@@ -203,6 +203,11 @@ export class PrivateApi {
   async createOrder(params: CreateOrderOptions): Promise<OrderObject> {
     const clientId = params.clientId || generateRandomClientIdOmni(this.clientConfig.accountId);
 
+    const limitFee = params.limitFee || new BigNumber(params.price)
+        .multipliedBy(params.takerFeeRate || '0.005')
+        .multipliedBy(params.size)
+        .toFixed(6, BigNumber.ROUND_UP);
+
     let signature: string = params.signature || '';
 
     if (!params.expiration) {
@@ -263,6 +268,7 @@ export class PrivateApi {
 
     let order: ObjectType = {
       ...params,
+      limitFee,
       clientId,
       signature,
     };

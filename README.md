@@ -49,6 +49,57 @@ const apiKeyCredentials: ApiKeyCredentials = {
 const seed: string = "your omnikey";
 await apexClient.init(apiKeyCredentials, seed);
 
+// 'GET Trade History'
+const { orders } = await apexClient.privateApi.tradeHistory(`BTC-USDT`, 'OPEN');
+    
+//'GET Open Position '
+const  account  = await apexClient.privateApi.getAccount(apexClient.clientConfig?.accountId, apexClient.user?.ethereumAddress);
+const positions = account?.positions
+
+
+```
+
+Please refer to [create_order demo](test/createOrder.spec.ts)
+
+```typescript
+let apexClient = new ApexClient.omni(OMNI);
+const apiKeyCredentials: ApiKeyCredentials = {
+    key: 'api key',
+    passphrase: ' passphrase ',
+    secret: ' secret',
+};
+const seed: string = "your omnikey";
+await apexClient.init(apiKeyCredentials, seed);
+
+// 'POST Create Limit Orders'
+    const symbol = `BTC-USDT`;
+    const price = '100000';
+    const size = '0.01';
+    const baseCoinRealPrecision = apexClient?.symbols?.[symbol]?.baseCoinRealPrecision;
+    const takerFeeRate = apexClient.account.contractAccount.takerFeeRate;
+    const makerFeeRate = apexClient.account.contractAccount.makerFeeRate;
+
+    const limitFee = new BigNumber(price)
+        .multipliedBy(takerFeeRate || '0')
+        .multipliedBy(size)
+        .toFixed(6, BigNumber.ROUND_UP);
+
+    const apiOrder = {
+        pairId: apexClient.symbols[symbol]?.l2PairId,
+        makerFeeRate,
+        takerFeeRate,
+        symbol,
+        side: OrderSide.BUY,
+        type: 'LIMIT',
+        size,
+        price,
+        limitFee,
+        timeInForce: 'GOOD_TIL_CANCEL',
+    } as CreateOrderOptions;
+
+    const result = await apexClient.privateApi.createOrder(apiOrder);
+
+
 
 ```
 

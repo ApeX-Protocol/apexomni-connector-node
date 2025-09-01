@@ -442,3 +442,197 @@ export interface HistoryFundingObject {
   fundingTime: number;
   fundingTimestamp: number;
 }
+
+
+export interface IContractAccount {
+  l2Key: string;
+  vipMakerFeeRate: string;
+  accountId: string;
+  createdAt: number;
+  vipTakerFeeRate: string;
+  makerFeeRate: string;
+  takerFeeRate: string;
+  unrealizePnlPriceType: string;
+  userId: string;
+  updatedAt: number;
+  status: string;
+}
+
+export interface ISpotWallet {
+  accountId: string;
+  pendingDepositAmount: string;
+  subAccountId: string;
+  balance: string;
+  pendingWithdrawAmount: string;
+  pendingTransferInAmount: string;
+  pendingTransferOutAmount: string;
+  userId: string;
+  token: string;
+}
+
+export interface ISpotSubAccount {
+  l2Key: string;
+  nonceVersion: number;
+  changePubKeyStatus: string;
+  subAccountId: string;
+  nonce: number;
+}
+
+export interface ISpotAccount {
+  accountId: string;
+  createdAt: number;
+  subAccounts: ISpotSubAccount[];
+  defaultSubAccountId: string;
+  zkAccountId: string;
+  userId: string;
+  ethAddress: string;
+  nonce: number;
+  updatedAt: number;
+  status: string;
+}
+
+export interface IOrderParams {
+  triggerSize: string;
+  triggerPrice: string;
+  triggerPriceType: string;
+}
+
+export interface IOrder {
+  cumSuccessLiquidateFee: string;
+  symbol: string;
+  openSlParams: IOrderParams;
+  cumSuccessFillFee: string;
+  type: string;
+  isPositionTpsl: any;
+  isDeleverage: any;
+  createdAt: number;
+  isSetOpenTp: any;
+  price: string;
+  cumSuccessFillValue: string;
+  id: string;
+  cancelReason: string;
+  timeInForce: string;
+  updatedAt: number;
+  limitFee: string;
+  side: string;
+  clientId: string;
+  triggerPrice: string;
+  triggerPriceType: string;
+  expiresAt: number;
+  openTpParams: IOrderParams;
+  cumSuccessFillSize: string;
+  accountId: string;
+  size: string;
+  reduceOnly: any;
+  isSetOpenSl: any;
+  isLiquidate: any;
+  remainingSize: string;
+  status: string;
+}
+
+export interface IPosition {
+  totalCumFundingFee: string;
+  symbol: string;
+  exitPrice: string;
+  side: string;
+  totalCumOpenValue: string;
+  totalCumCloseValue: string;
+  openValue: string;
+  totalCumOpenSize: string;
+  totalCumOpenFee: string;
+  sumOpen: string;
+  fundingFee: string;
+  sumClose: string;
+  totalCumCloseSize: string;
+  entryPrice: string;
+  accountId: string;
+  customImr: string;
+  size: string;
+  realizedPnl: string;
+  totalCumCloseFee: string;
+  updatedAt: number;
+}
+
+export interface IExperienceMoney {
+  accountId: string;
+  totalAmount: string;
+  totalNumber: string;
+  recycledAmount: string;
+  availableAmount: string;
+  token: string;
+}
+
+export interface IContractWallet {
+  accountId: string;
+  pendingDepositAmount: string;
+  balance: string;
+  pendingWithdrawAmount: string;
+  pendingTransferInAmount: string;
+  pendingTransferOutAmount: string;
+  token: string;
+}
+
+export interface IDeleverage {
+  accountId: string;
+  symbol: string;
+  lightNumber: string;
+  side: string;
+}
+
+export interface PositionClosedTransaction {
+  symbol: string;
+  side: string; // "LONG" | "SHORT"
+  liquidateFee: string;
+  orderId: string;
+  fee: string;
+  closeSharedFundingFee: string;
+  type: string; // "CLOSE_POSITION" 等
+  isDeleverage: boolean;
+  accountId: string;
+  createdAt: number;
+  size: string;
+  price: string;
+  closeSharedOpenFee: string;
+  closeSharedOpenValue: string;
+  fundingValue: string;
+  isLiquidate: boolean;
+  id: string;
+}
+
+export interface Fill {
+  symbol: string;
+  side: string;
+  matchFillId: string;
+  liquidateFee: string;
+  orderId: string;
+  clientOrderId: string;
+  fee: string;
+  isDeleverage: boolean;
+  accountId: string;
+  createdAt: number;
+  isOpen: boolean;
+  size: string;
+  price: string;
+  quoteAmount: string;
+  isLiquidate: boolean;
+  id: string;
+  direction: string; // "TAKER" | "MAKER"
+  status: string; // "SUCCESS" 等
+  updatedAt: number;
+}
+
+// ============ 顶层返回数据 ============
+
+export interface IContents {
+  contractAccounts: IContractAccount[];
+  spotWallets: ISpotWallet[];
+  spotAccounts: ISpotAccount[];
+  transfers: any[];
+  positionClosedTransactions: PositionClosedTransaction[];
+  orders: IOrder[];
+  positions: IPosition[];
+  experienceMoney: IExperienceMoney[];
+  contractWallets: IContractWallet[];
+  deleverages: IDeleverage[];
+  fills: Fill[];
+}

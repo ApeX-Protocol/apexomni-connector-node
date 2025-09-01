@@ -48,7 +48,7 @@ describe('Omni createOrder Api Example', () => {
     const limitFee = new BigNumber(price)
         .multipliedBy(takerFeeRate || '0')
         .multipliedBy(size)
-        .toFixed(baseCoinRealPrecision, BigNumber.ROUND_UP);
+        .toFixed(6, BigNumber.ROUND_UP);
 
     const apiOrder = {
       pairId: apexClient.symbols[symbol]?.l2PairId,
