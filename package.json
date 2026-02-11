@@ -1,6 +1,6 @@
 {
   "name": "apexomni-connector-node",
-  "version": "0.3.1-alpha.2",
+  "version": "0.3.1-alpha.3",
   "description": "ApexOmni Connector Node.js SDK",
   "main": "lib/index.js",
   "module": "lib/index.js",

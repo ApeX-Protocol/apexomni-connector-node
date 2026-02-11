@@ -376,4 +376,18 @@ export class PrivateApi {
   async accountBalance(): Promise<AccountBalanceObject> {
     return this.request('/account-balance', 'get', {});
   }
+
+  async submitTradeReward(rewardId: string, ethAddress?: string): Promise<any> {
+    if (isNullOrBlank(rewardId)) {
+      throw new Error('rewardId is required');
+    }
+    const resolvedEthAddress = ethAddress || this.clientConfig.client?.user?.ethereumAddress;
+    if (isNullOrBlank(resolvedEthAddress)) {
+      throw new Error('Ethereum address is not found');
+    }
+    return this.request('/reward/submit-trade-reward', 'post', {
+      rewardId,
+      ethAddress: resolvedEthAddress,
+    });
+  }
 }

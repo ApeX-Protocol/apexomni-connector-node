@@ -94,6 +94,13 @@ export class ApexClientOmni {
     return symbols_perpetual
   }
 
+  async submitTradeReward(rewardId: string): Promise<any> {
+    if (!this.user?.ethereumAddress) {
+      throw new Error('Ethereum address is not found');
+    }
+    return this.privateApi.submitTradeReward(rewardId, this.user.ethereumAddress);
+  }
+
   //private async createOrder() : Promise<OrderObject> {
  // }
 
