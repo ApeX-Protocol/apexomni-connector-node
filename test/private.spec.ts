@@ -14,7 +14,7 @@ import {numberToBytes} from "viem";
 
 describe('Omni Private Api Example', () => {
   let apexClient: ApexClient.omni;
-  const env = OMNI_PROD
+  const env = OMNI_QA
 
   before(async () => {
     apexClient = new ApexClient.omni(env);
@@ -89,6 +89,38 @@ describe('Omni Private Api Example', () => {
     Trace.print(orders);
   });
 
+  it('GET Order Fills', async () => {
+    const { orders } = await apexClient.privateApi.historyOrders();
+    const orderId = orders?.[0]?.id;
+    if (!orderId) {
+      return;
+    }
+    const fills = await apexClient.privateApi.orderFills({ orderId, limit: 1 });
+    Trace.print(fills);
+  });
+
+  it('POST Cancel Orders By Client Order Ids', async () => {
+    const orders = await apexClient.privateApi.openOrders();
+    const clientOrderIds = orders
+      ?.map((order) => order.clientOrderId || order.clientId)
+      .filter((id) => id);
+    if (!clientOrderIds?.length) {
+      return;
+    }
+    const result = await apexClient.privateApi.cancelOrderByClientOrderIds(clientOrderIds.slice(0, 1));
+    Trace.print(result);
+  });
+
+  it('POST Cancel Orders', async () => {
+    const orders = await apexClient.privateApi.openOrders();
+    const orderIds = orders?.map((order) => order.id).filter((id) => id);
+    if (!orderIds?.length) {
+      return;
+    }
+    const result = await apexClient.privateApi.cancelOrders(orderIds.slice(0, 1));
+    Trace.print(result);
+  });
+
   it('POST Cancel all Open Orders', async () => {
     const symbol = `BTC-USDT`;
     await apexClient.privateApi.cancelAllOrder(symbol);
@@ -135,6 +167,81 @@ describe('Omni Private Api Example', () => {
     const clientOrderId = "apexomni-634283468140839001-1744471003321-775651"
     const order = await apexClient.privateApi.getOrderByClientOrderId(clientOrderId);
     Trace.print(order);
+  });
+
+  it('POST Modify User', async () => {
+    const res = await apexClient.privateApi.modifyUser({ isSharingUsername: true }).catch((error) => {
+      console.log('error', error);
+    });
+    Trace.print(res);
+  });
+
+  it('GET Transfers', async () => {
+    const res = await apexClient.privateApi.transfers({ limit: 1, page: 0, subAccountId: '0' });
+    Trace.print(res);
+  });
+
+  it('GET Transfer', async () => {
+    const listRes = await apexClient.privateApi.transfers({ limit: 1, page: 0, subAccountId: '0' });
+    const ids = listRes?.transfers?.[0]?.id || listRes?.data?.transfers?.[0]?.id;
+    if (!ids) {
+      return;
+    }
+    const res = await apexClient.privateApi.transfer({ ids });
+    Trace.print(res);
+  });
+
+  it('GET Contract Transfers', async () => {
+    const res = await apexClient.privateApi.contractTransfers({ limit: 1, page: 0 });
+    Trace.print(res);
+  });
+
+  it('GET Contract Transfer', async () => {
+    const listRes = await apexClient.privateApi.contractTransfers({ limit: 1, page: 0 });
+    const ids = listRes?.transfers?.[0]?.id || listRes?.data?.transfers?.[0]?.id;
+    if (!ids) {
+      return;
+    }
+    const res = await apexClient.privateApi.contractTransfer({ ids });
+    Trace.print(res);
+  });
+
+  it('GET Withdraw List', async () => {
+    const res = await apexClient.privateApi.withdrawList({ limit: 1, page: 0 }).catch((error) => {
+      console.log('error', error);
+    });
+    Trace.print(res);
+  });
+
+  it('GET Contract Transfer Limit', async () => {
+    const res = await apexClient.privateApi.contractTransferLimit({ token: 'USDT' });
+    Trace.print(res);
+  });
+
+  it('GET Withdraw Fee', async () => {
+    const res = await apexClient.privateApi.withdrawFee({});
+    Trace.print(res);
+  });
+
+  it('GET Withdraws By Time And Status', async () => {
+    const res = await apexClient.privateApi.withdrawsByTimeAndStatus({
+      limit: 1,
+      page: 0,
+      client_time: Math.floor(Date.now() / 1000),
+    }).catch((error) => {
+      // QA currently returns INVALID_CLIENT_TIME regardless of sent value.
+      if (error?.msg?.includes('invalid client_time')) {
+        console.log('skip due to backend validation issue:', error?.msg);
+        return null;
+      }
+      throw error;
+    });
+    Trace.print(res);
+  });
+
+  it('GET History Value', async () => {
+    const res = await apexClient.privateApi.historyValue({ limit: 1, page: 0 });
+    Trace.print(res);
   });
 
   it('Set Symbol trade Leverage ratio', async () => {

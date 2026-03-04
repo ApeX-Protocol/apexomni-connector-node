@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "outDir": "lib",
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/omni/**/*",
+    "src/ws/**/*",
+    "src/packages/node-dist/zklink-sdk-node_bg.wasm",
+    "src/packages/node-dist/zklink-sdk-node_bg.wasm.d.ts",
+    "src/packages/web-dist/zklink-sdk-web_bg.wasm",
+    "src/packages/web-dist/zklink-sdk-web_bg.wasm.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/pro",
+    "**/*.spec.ts"
+  ]
+}

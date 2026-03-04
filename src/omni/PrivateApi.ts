@@ -288,9 +288,21 @@ export class PrivateApi {
     });
   }
 
+  async cancelOrderByClientOrderIds(ids: string[]): Promise<number> {
+    return this.request('/delete-client-order-ids', 'post', {
+      ids,
+    });
+  }
+
   async cancelAllOrder(symbol?: string): Promise<void> {
     return this.request('/delete-open-orders', 'post', {
       symbol,
+    });
+  }
+
+  async cancelOrders(ids: string[]): Promise<number> {
+    return this.request('/delete-orders', 'post', {
+      ids,
     });
   }
 
@@ -309,6 +321,17 @@ export class PrivateApi {
 
   async getOrderByClientOrderId(id: string): Promise<OrderObject> {
     return this.request('/order-by-client-order-id', 'get', { id });
+  }
+
+  async orderFills(params?: {
+    orderId?: string;
+    symbol?: string;
+    limit?: number;
+    beginTimeInclusive?: number;
+    endTimeExclusive?: number;
+    page?: number;
+  }): Promise<any> {
+    return this.request('/order-fills', 'get', params || {});
   }
 
   async historyOrders(params?: {
@@ -375,6 +398,61 @@ export class PrivateApi {
 
   async accountBalance(): Promise<AccountBalanceObject> {
     return this.request('/account-balance', 'get', {});
+  }
+
+  async modifyUser(params: ObjectType): Promise<any> {
+    return this.request('/modify-user', 'post', params || {});
+  }
+
+  async transfers(params?: {
+    fromTime?: number;
+    endTime?: number;
+    token?: string;
+    type?: string;
+    subAccountId?: string;
+    page?: number;
+    limit?: number;
+  }): Promise<any> {
+    return this.request('/transfers', 'get', {
+      subAccountId: '0',
+      ...(params || {}),
+    });
+  }
+
+  async transfer(params?: ObjectType): Promise<any> {
+    return this.request('/transfer', 'get', params || {});
+  }
+
+  async contractTransfers(params?: ObjectType): Promise<any> {
+    return this.request('/contract-transfers', 'get', params || {});
+  }
+
+  async contractTransfer(params?: ObjectType): Promise<any> {
+    return this.request('/contract-transfer', 'get', params || {});
+  }
+
+  async withdrawList(params?: ObjectType): Promise<any> {
+    return this.request('/withdraw-list', 'get', params || {});
+  }
+
+  async contractTransferLimit(params?: ObjectType): Promise<any> {
+    return this.request('/contract-transfer-limit', 'get', params || {});
+  }
+
+  async withdrawFee(params?: ObjectType): Promise<any> {
+    return this.request('/withdraw-fee', 'get', params || {});
+  }
+
+  async withdrawsByTimeAndStatus(params?: ObjectType): Promise<any> {
+    const payload: ObjectType = { ...(params || {}) };
+    if (payload.clientTime && !payload.client_time) {
+      payload.client_time = payload.clientTime;
+    }
+    return this.request('/withdraws-by-time-and-status', 'get', payload);
+  }
+
+  async historyValue(params?: ObjectType): Promise<any> {
+    return this.request('/history-value', 'get', params || {});
   }
 
   async submitTradeReward(rewardId: string, ethAddress?: string): Promise<any> {
